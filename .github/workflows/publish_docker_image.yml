@@ -1,0 +1,21 @@
+name: Publish Docker Image
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  push:
+    name: 'Build and Push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Build and push to Github Packages'
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: ${{ github.repository }}/waithook
+          tag_with_ref: true
+          add_git_labels: true
